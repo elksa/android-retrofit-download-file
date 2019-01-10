@@ -95,6 +95,8 @@ public class DownloadService extends IntentService {
                     .setContentText("Downloading File")
                     .setAutoCancel(true);
             notificationManager.notify(0, notificationBuilder.build());
+
+            initDownload();
         }
 
         // Stub method
@@ -187,6 +189,24 @@ public class DownloadService extends IntentService {
         Intent intent = new Intent(MainActivity.MESSAGE_PROGRESS);
         intent.putExtra("download",download);
         LocalBroadcastManager.getInstance(DownloadService.this).sendBroadcast(intent);
+    }
+
+    private void onDownloadComplete(){
+
+        Download download = new Download();
+        download.setProgress(100);
+        sendIntent(download);
+
+        notificationManager.cancel(0);
+        notificationBuilder.setProgress(0,0,false);
+        notificationBuilder.setContentText("File Downloaded");
+        notificationManager.notify(0, notificationBuilder.build());
+
+    }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        notificationManager.cancel(0);
     }
 
 
