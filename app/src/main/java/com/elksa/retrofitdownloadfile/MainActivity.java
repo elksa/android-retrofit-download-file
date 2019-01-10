@@ -49,8 +49,23 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         registerReceiver();
+    }
+
+    @Override
+    protected void onStop() {
+
+        if (broadcastReceiver != null) {
+            unregisterReceiver(broadcastReceiver);
+        }
+
+        super.onStop();
     }
 
     private void startDownload(){
